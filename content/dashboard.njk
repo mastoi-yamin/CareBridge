@@ -1,11 +1,30 @@
 ---
 layout: base.njk
-title: Dashboard
+title: Care Bridge - Dashboard
 js:
   - '/js/dashboard.js'
 ---
 
-<div class="container">
-    <div id="authContent"></div>
-    <button id="logoutBtn" style="display:none">Logout</button>
-</div>
+<section class="container">
+    <div id="dashboard-header">
+        <h1>Welcome back!</h1>
+        <p id="user-role-badge" class="badge">Loading...</p>
+    </div>
+
+    <div class="grid" id="stats-container">
+        <article>
+            <small>Status</small>
+            <h5 id="stat-1">Checking...</h5>
+        </article>
+        <article>
+            <small>Total Requests/Donations</small>
+            <h5 id="stat-2">0</h5>
+        </article>
+    </div>
+
+    <hr>
+
+    <h3>Your History</h3>
+    <div id="user-requests-list">
+        </div>
+</section>

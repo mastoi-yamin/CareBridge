@@ -28,6 +28,13 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       });
 
       message.textContent = 'Success! Redirecting...';
+      
+      const userData = await window.getUserData(user.uid);
+
+      // 🚨 SAVE TO STORAGE HERE
+      localStorage.setItem('userRole', userData.role);
+      localStorage.setItem('userName', userData.name);
+      
       setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
   } catch (error) {
       message.textContent = 'Error: ' + error.message;

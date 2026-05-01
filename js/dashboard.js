@@ -1,45 +1,47 @@
-const authContent = document.getElementById('authContent');
-const logoutBtn = document.getElementById('logoutBtn');
+import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-        window.location.href = '/login';
-        return;
+onAuthStateChanged(window.auth, async (user) => {
+    if (!user) { window.location.href = "/login"; return; }
+
+    const userData = await window.getUserData(user.uid);
+    const role = userData.role;
+
+    // 1. Update UI based on role
+    document.getElementById('user-role-badge').textContent = role.toUpperCase();
+    
+    // 2. Load Stats & History
+    let q;
+    if (role === 'donor') {
+        document.getElementById('stat-1').textContent = "Active Helper";
+        q = query(collection(window.db, "requests"), where("fundedBy", "==", user.uid));
+    } else {
+        const status = (role === 'hospital' && !userData.isApproved) ? "Pending Approval ⏳" : "Verified ✅";
+        document.getElementById('stat-1').textContent = status;
+        q = query(collection(window.db, "requests"), where("createdBy", "==", user.uid));
     }
-    
-    // Get user role from Firestore
-    const userDoc = await db.collection('users').doc(user.uid).get();
-    const userData = userDoc.data();
-    const role = userData?.role || 'unknown';
-    
-    // Show logout button
-    logoutBtn.style.display = 'block';
-    
-    // Render dashboard based on role
-    authContent.innerHTML = `
-        <h1>Dashboard</h1>
-        <p>Welcome, ${user.displayName || user.email}!</p>
-        <p>Role: <strong>${role}</strong></p>
-        
-        ${role === 'donor' ? `
-            <div>
-                <h2>Donor Portal</h2>
-                <p>Browse medical requests to fund.</p>
-                <button onclick="window.location.href='/requests'">View Requests</button>
-            </div>
-        ` : ''}
-        
-        ${role === 'individual' ? `
-            <div>
-                <h2>Patient Portal</h2>
-                <p>Create and track your medical requests.</p>
-                <button onclick="window.location.href='/my-requests'">My Requests</button>
-            </div>
-        ` : ''}
-    `;
-});
 
-logoutBtn.addEventListener('click', async () => {
-    await auth.signOut();
-    window.location.href = '/login';
+    const snap = await getDocs(q);
+    document.getElementById('stat-2').textContent = snap.size;
+
+    // 3. Render the list (Reuse your card logic from requests page!)
+    const list = document.getElementById('user-requests-list');
+    if (snap.empty) {
+        list.innerHTML = "<p>No history found yet. Start your journey! ✨</p>";
+    } else {
+        snap.forEach(doc => {
+            const data = doc.data();
+            list.innerHTML += `
+                <article>
+                    <div class="grid">
+                        <div>
+                            <strong>${data.medicine}</strong><br>
+                            <small>${data.status === 'funded' ? '✅ Funded' : '⏳ Pending'}</small>
+                        </div>
+                        <div style="text-align: right;">$${data.cost}</div>
+                    </div>
+                </article>
+            `;
+        });
+    }
 });
