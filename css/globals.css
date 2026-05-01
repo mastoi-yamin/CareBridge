@@ -91,7 +91,7 @@ a img {
   color: #5E5B8B;
 }
 
-#home-impact-section {
+.home-impact-section {
   background-color: var(--pico-contrast-background);
 }
 
@@ -120,7 +120,7 @@ a img {
   #side-nav-close svg { color: #fff }
   #side-nav { background: #222233fe }
 
-  #home-impact-section {
+  .home-impact-section {
     background-color: #1F3C88;
   }
 }

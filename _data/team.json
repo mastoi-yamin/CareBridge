@@ -1,0 +1,29 @@
+{
+  "members": [
+    {
+      "name": "Omar Hossam (Egypt)",
+      "role": "Core platform development, backend architecture, Firebase integration, Idea and Team Lead",
+      "github": "https://github.com/omar-hossam"
+    },
+    {
+      "name": "Meet Dubey (India)",
+      "role": "Submission video recording & editing, website testing, UI request form",
+      "github": "https://github.com/MeetDubey17-bit"
+    },
+    {
+      "name": "Adan Khurram (Pakistan)",
+      "role": "Submission page text, screenshots, design assistance",
+      "github": "https://github.com/adanzee"
+    },
+    {
+      "name": "Lincoln (Singapore)",
+      "role": "Hero section design & implementation",
+      "github": "https://github.com/Strange-can"
+    },
+    {
+      "name": "Yamin Alee (Pakistan)",
+      "role": "Minor assistance & debugging support",
+      "github": "https://github.com/mastoi-yamin"
+    }
+  ]
+}

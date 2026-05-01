@@ -21,6 +21,20 @@
         {{ content | safe }}
     </main>
     
+    <footer class="container" style="padding: 2rem 0; border-top: 1px solid var(--pico-muted-border-color);">
+      <div class="grid">
+        <div>
+          <p><strong>CareBridge</strong><br><small>© 2026. Built for <a href="https://gnec-hackathon-2026-spring.devpost.com/" target="_blank">GNEC Spring 2026 Hackathon.</a></small></p>
+        </div>
+        <div style="text-align: right;">
+          <a href="/" class="secondary">Home</a> | 
+          <a href="/about" class="secondary">About</a> | 
+          <a href="/requests" class="secondary">Requests</a> | 
+          <a href="/email-us" class="secondary">Contact</a>
+        </div>
+      </div>
+    </footer>
+    
     <script src="/js/helpers.js"></script>
     
     <!-- Firebase Import Map -->
@@ -28,7 +42,8 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
       import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-            
+      import { autoSeed } from '/js/seeder.js';
+    
       const firebaseConfig = {
         apiKey: "{{ firebase.apiKey }}",
         authDomain: "{{ firebase.authDomain }}",
@@ -77,6 +92,9 @@
                 }
             }, 2000);
         };
+
+        // Run the seeder
+        autoSeed();
     </script>
     <script type="module" src="/js/nav-and-sidebars.js"></script>
 

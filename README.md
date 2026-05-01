@@ -24,8 +24,22 @@ A **donation platform** connecting patients in need, verified hospitals, and don
 
 ## 📚 Documentation
 
-For **detailed scenarios** (patient direct, hospital flow, donor verification), see:  
-👉 [docs/How-It-Works.md](docs/How-It-Works.md)
+CareBridge is built on a "Trust-First" architecture. To understand how we handle security, medical verification, and global impact goals, please refer to our detailed guides:
+
+### 🚀 For Judges: The Demo Quickstart
+
+- [Instruction Guide (Mock Data)](docs/INSTRUCTIONS.md) *Read this first!* Learn how to use our **Auto-Seeder** to instantly prime the database with demo hospitals, donors, and urgent requests.
+
+### 🛠️ System Architecture & Scenarios
+ 
+- [How It Works (Logic Flows)](docs/How-It-Works.md) How It Works (Logic Flows) A deep dive into our core scenarios:
+  - **Direct Patient Aid:** How individuals bypass predatory lending.
+  - **Hospital Verification:** How individuals bypass predatory lending.
+  - **Donor Transparency:** How individuals bypass predatory lending.
+
+### 🌍 Impact & Goals
+
+- **UNSDG3 Alignment** How CareBridge contributes to **UN Sustainable Development Goal #3** (Good Health and Well-being) and our roadmap for scaling to rural healthcare. 
 
 ---
 
