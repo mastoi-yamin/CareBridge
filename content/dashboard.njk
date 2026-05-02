@@ -7,7 +7,7 @@ js:
 
 <section class="container">
     <div id="dashboard-header">
-        <h1>Welcome back!</h1>
+        <h1>Welcome back, <span id="user-name">...</span>!</h1>
         <p id="user-role-badge" class="badge">Loading...</p>
     </div>
 
@@ -17,14 +17,14 @@ js:
             <h5 id="stat-1">Checking...</h5>
         </article>
         <article>
-            <small>Total Requests/Donations</small>
+            <small id="stat-2-label">Total Requests/Donations</small>
             <h5 id="stat-2">0</h5>
         </article>
     </div>
 
     <hr>
 
-    <h3>Your History</h3>
-    <div id="user-requests-list">
-        </div>
+    <!-- ✅ Fixed: was <h3>, dashboard.js was querying <h2> -->
+    <h3 id="history-heading">Your History</h3>
+    <div id="user-requests-list"></div>
 </section>

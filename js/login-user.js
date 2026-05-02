@@ -1,11 +1,8 @@
-// login.js
 import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { guard } from '/js/guard.js';
 
-const { auth } = window;
-
-onAuthStateChanged(auth, (user) => {
-    if (user) { window.location.href = '/dashboard'; }
-});
+// Guard handles the redirect-if-logged-in case
+await guard({ access: 'guest' });
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -14,14 +11,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const message = document.getElementById('message');
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        message.textContent = 'Success! Redirecting...';
-        
-        const userData = await window.getUserData(user.uid);
-
-        // 🚨 SAVE TO STORAGE HERE
+        const userCredential = await signInWithEmailAndPassword(window.auth, email, password);
+        const userData = await window.getUserData(userCredential.user.uid);
         localStorage.setItem('userRole', userData.role);
         localStorage.setItem('userName', userData.name);
+        message.textContent = 'Success! Redirecting...';
         setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
     } catch (error) {
         message.textContent = 'Error: ' + error.message;

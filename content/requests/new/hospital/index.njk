@@ -1,16 +1,33 @@
 ---
 title: CareBridge - Add a new request
 layout: base.njk
+js:
+  - '/js/requests/hospital.js'
 ---
 
 <a href="/dashboard" role="button" class="outline secondary" style="margin-bottom: 2rem;">
   Back to Dashboard
 </a>
 
-<form id="hospRequestForm">
-  <input type="text" id="patientId" placeholder="Anonymous Patient ID (e.g. P-102)" required>
-  <input type="text" id="medName" placeholder="Medicine 1, Medicine 2.." required>
-  <input type="number" id="cost" placeholder="Total Cost ($)" required>
-  <label>Upload Bill (Blur names!) <input type="file" id="billImg"></label>
+<form id="hospRequestForm" class="container">
+  <label>Anonymous Patient ID
+    <input type="text" id="patientId" placeholder="e.g. P-102" required>
+  </label>
+  <label>Medicine Names
+    <input type="text" id="medName" placeholder="Medicine 1, Medicine 2.." required>
+  </label>
+  <label>Total Cost ($)
+    <input type="number" id="cost" required>
+  </label>
+  <!-- ✅ Fixed: added priority field that index.js reads as item.urgent -->
+  <label>Priority
+    <select id="urgent">
+      <option value="false">Normal</option>
+      <option value="true">Life (Urgent)</option>
+    </select>
+  </label>
+  <label>Upload Bill (Blur patient names!)
+    <input type="file" id="billImg" accept="image/*,application/pdf">
+  </label>
   <button type="submit">Post Request</button>
 </form>

@@ -44,13 +44,13 @@
     
     <script src="/js/helpers.js"></script>
     
-    <!-- Firebase Import Map -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
       import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
       import { autoSeed } from '/js/seeder.js';
-    
+
       const firebaseConfig = {
         apiKey: "{{ firebase.apiKey }}",
         authDomain: "{{ firebase.authDomain }}",
@@ -60,49 +60,55 @@
         appId: "{{ firebase.appId }}"
       };
 
-      // Initialize Firebase
+      // ✅ Initialize app FIRST, then everything that needs it
       const app = initializeApp(firebaseConfig);
       window.db = getFirestore(app);
       window.auth = getAuth(app);
-      
+      window.storage = getStorage(app); // ✅ app exists here, only set once
+
+      // ✅ _authReady: no need to re-import, onAuthStateChanged is already imported above
+      window._authReady = new Promise(resolve => {
+        const unsub = onAuthStateChanged(window.auth, () => {
+          unsub();
+          resolve();
+        });
+      });
+
       window.getUserData = async (uid) => {
         const docRef = doc(window.db, "users", uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            return docSnap.data(); // Returns { name, role, email, etc }
+          return docSnap.data();
         }
         return null;
       };
-      
+
       window.payNow = async (requestId) => {
-            // 1. Show a fake loading state
-            const btn = event.target;
-            btn.ariaBusy = "true";
-            btn.textContent = "Processing Payment...";
+        if (!window.auth.currentUser) {
+          alert("You must be logged in to donate.");
+          return;
+        }
+        const btn = event.target;
+        btn.ariaBusy = "true";
+        btn.textContent = "Processing Payment...";
 
-            // 2. Simulate 2-second bank delay ⏳
-            setTimeout(async () => {
-                try {
-                    // 3. Update Firestore status to 'funded'
-                    const requestRef = doc(window.db, "requests", requestId);
-                    await updateDoc(requestRef, {
-                        status: 'funded',
-                        fundedBy: window.auth.currentUser.uid
-                    });
-
-                    // 4. Success Message
-                    alert("Payment Successful! You just saved a life.");
-                    location.reload(); 
-                } catch (err) {
-                    alert("Payment failed: " + err.message);
-                    btn.ariaBusy = "false";
-                }
-            }, 2000);
-        };
-
-        // Run the seeder
-        autoSeed();
+        setTimeout(async () => {
+          try {
+            const requestRef = doc(window.db, "requests", requestId);
+            await updateDoc(requestRef, {
+              status: 'funded',
+              fundedBy: window.auth.currentUser.uid
+            });
+            alert("Payment Successful! You just saved a life.");
+            location.reload();
+          } catch (err) {
+            alert("Payment failed: " + err.message);
+            btn.ariaBusy = "false";
+          }
+        }, 2000);
+      };
     </script>
+
     <script type="module" src="/js/nav-and-sidebars.js"></script>
 
     {%- for script in js %}

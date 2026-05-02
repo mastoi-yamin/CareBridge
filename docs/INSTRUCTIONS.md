@@ -9,13 +9,16 @@ Use these steps to navigate the demo like a pro.
 - You will see: `🛠️ First-time visit detected. Priming demo data...`
 - The database is now populated with mock Hospitals, Donors, and Requests.
 
-### 2. Available Mock Entities
+### 2. Demo Login Credentials
 
-| Entity Name | Type | Key Feature to Show |
+*Use the password **`password123`** for all accounts below:*
+
+| Role | Email | Purpose |
 | :--- | :--- | :--- |
-| **St. Jude Medical** | Hospital | Pre-verified institution with active billing requests. |
-| **Sarah Donor** | Donor | An account with a history of "Funded" donations. |
-| **Epinephrine Auto-Injector** | Request | An **Urgent** individual request (highlighted in red). |
+| **Admin** | `admin@carebridge.com` | Verify hospitals & manage platform. |
+| **Hospital** | `contact@cityhope.org` | Post bulk medicine requests for patients. |
+| **Individual** | `john@example.com` | Post direct personal aid requests. |
+| **Donor** | `sarah@donor.com` | Fund requests and view impact history. |
 
 ### 3. Step-by-Step Demo Flow
 

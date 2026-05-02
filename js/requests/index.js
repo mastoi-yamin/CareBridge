@@ -1,56 +1,85 @@
-import { collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, query, where, getDocs, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const requestsContainer = document.getElementById('right');
 
-async function loadRequests(filterOpts = {}) {
-    // 1. Clear current cards
-    requestsContainer.innerHTML = '';
-    
-    // 2. Build Query (Showing only unpaid requests)
-    const q = query(
-        collection(window.db, "requests"), 
-        where("status", "==", "pending"),
-        orderBy("createdAt", "desc") 
-    );
+// ✅ Fixed: cache hospital names to avoid duplicate Firestore reads
+const hospitalNameCache = {};
+async function getHospitalName(uid) {
+    if (hospitalNameCache[uid]) return hospitalNameCache[uid];
+    const snap = await getDoc(doc(window.db, "users", uid));
+    const name = snap.exists() ? snap.data().name : 'Unknown Hospital';
+    hospitalNameCache[uid] = name;
+    return name;
+}
 
+async function loadRequests(filterOpts = {}) {
+    requestsContainer.innerHTML = `<p aria-busy="true">Loading requests...</p>`;
+
+    // ✅ Fixed: actually apply filter options to the query
+    let constraints = [
+        where("status", "==", "pending"),
+        orderBy("createdAt", filterOpts.amount === 'newest' || !filterOpts.amount ? "desc" : "asc")
+    ];
+
+    if (filterOpts.type && filterOpts.type !== 'all') {
+        // 'hospitals' -> 'hospital', 'individuals' -> 'individual'
+        constraints.push(where("type", "==", filterOpts.type.replace(/s$/, '')));
+    }
+
+    if (filterOpts.priority && filterOpts.priority !== 'all') {
+        constraints.push(where("urgent", "==", filterOpts.priority === 'life'));
+    }
+
+    const q = query(collection(window.db, "requests"), ...constraints);
     const querySnapshot = await getDocs(q);
+
+    requestsContainer.innerHTML = '';
 
     if (querySnapshot.empty) {
         requestsContainer.innerHTML = `<article><h3>No active requests found. 🕊️</h3></article>`;
         return;
     }
 
-    querySnapshot.forEach((docSnap) => {
-        const item = docSnap.data();
-        const id = docSnap.id;
-        
-        // Logic for UI labels
+    // Collect all docs first, then sort by cost client-side if needed
+    let docs = [];
+    querySnapshot.forEach(docSnap => docs.push({ id: docSnap.id, ...docSnap.data() }));
+
+    if (filterOpts.amount === 'lowest') docs.sort((a, b) => a.cost - b.cost);
+    if (filterOpts.amount === 'highest') docs.sort((a, b) => b.cost - a.cost);
+
+    for (const item of docs) {
         const isHospital = item.type === 'hospital';
         const priorityColor = item.urgent ? '#E63946' : 'darkblue';
         const priorityText = item.urgent ? 'Life' : 'Normal';
 
-        // 3. Create the Card HTML
+        // ✅ Fixed: show real hospital name instead of "Hospital Request"
+        const displayName = isHospital
+            ? await getHospitalName(item.createdBy)
+            : 'Individual in Need';
+
         const article = document.createElement('article');
         article.innerHTML = `
             <header>
                 <div class="inner-1">
-                    ${isHospital ? `<div class="hospital-logo"></div>` : `<img src='/icons/first-aid.svg' style="width:1.5rem"/>`}
-                    <span>${isHospital ? 'Hospital Request' : 'Individual in Need'}</span>
+                    ${isHospital
+                        ? `<div class="hospital-logo"></div>`
+                        : `<img src='/icons/first-aid.svg' style="width:1.5rem"/>`}
+                    <span>${displayName}</span>
                 </div>
                 <div role="button" class="outline secondary">${item.type}</div>
             </header>
-            
+
             <p>Medicines: <b>${item.medicine}</b></p>
             ${isHospital ? `<p>Patient ID: ${item.patientId}</p>` : ''}
             <p>Request Date: <small>${item.createdAt.toDate().toLocaleDateString()}</small></p>
-            
+
             <div class="tags">
                 <span class="priority" style="background-color: ${priorityColor};">${priorityText}</span>
                 <span class="donation-amount">$${item.cost}</span>
             </div>
-            
+
             <footer class="grid">
-                <button onclick="payNow('${id}')" style="font-weight: bold;">
+                <button onclick="payNow('${item.id}')" style="font-weight: bold;">
                     DONATE <img src='/icons/tip-jar.svg' />
                 </button>
                 <button onclick="contactUser('${item.createdBy}', '${item.medicine}')" class="secondary" style="font-weight: bold;">
@@ -59,12 +88,21 @@ async function loadRequests(filterOpts = {}) {
             </footer>
         `;
         requestsContainer.appendChild(article);
-    });
+    }
 }
 
-// 4. Contact Function (The Hackathon Mailer)
+// ✅ Fixed: filter form now actually triggers loadRequests
+document.querySelector('#cont-aside form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    loadRequests({
+        type: formData.get('type'),
+        priority: formData.get('priority'),
+        amount: formData.get('amount'),
+    });
+});
+
 window.contactUser = async (uid, med) => {
-    // Fetch the user's email from the 'users' collection
     const userSnap = await window.getUserData(uid);
     if (userSnap) {
         const subject = encodeURIComponent(`Inquiry regarding request for ${med}`);
@@ -73,5 +111,4 @@ window.contactUser = async (uid, med) => {
     }
 };
 
-// Start the engine
 loadRequests();
