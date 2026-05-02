@@ -11,7 +11,7 @@ hospitalForm.addEventListener('submit', async (e) => {
     const data = Object.fromEntries(formData.entries());
     
     if (data.password !== data['confrim-password']) {
-        alert("❌ Passwords do not match!");
+        alert("Passwords do not match!");
         return; // Stop the function here
     }
     

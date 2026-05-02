@@ -26,6 +26,7 @@
         {{ content | safe }}
     </main>
     
+    {% if page.url !== '/requests/' %}
     <footer class="container" style="padding: 2rem 0; border-top: 1px solid var(--pico-muted-border-color);">
       <div class="grid">
         <div>
@@ -35,10 +36,11 @@
           <a href="/" class="secondary">Home</a> | 
           <a href="/about" class="secondary">About</a> | 
           <a href="/requests" class="secondary">Requests</a> | 
-          <a href="/email-us" class="secondary">Contact</a>
+          <a href="#" class="secondary">Contact</a>
         </div>
       </div>
     </footer>
+    {% endif %}
     
     <script src="/js/helpers.js"></script>
     
@@ -89,7 +91,7 @@
                     });
 
                     // 4. Success Message
-                    alert("Payment Successful! You just saved a life. ❤️😇");
+                    alert("Payment Successful! You just saved a life.");
                     location.reload(); 
                 } catch (err) {
                     alert("Payment failed: " + err.message);

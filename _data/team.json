@@ -12,18 +12,13 @@
     },
     {
       "name": "Adan Khurram (Pakistan)",
-      "role": "Submission page text, screenshots, design assistance",
+      "role": "Submission page text, screenshots, design assistance & testing",
       "github": "https://github.com/adanzee"
     },
     {
       "name": "Lincoln (Singapore)",
-      "role": "Hero section design & implementation",
+      "role": "Hero section design & implementation, Testing",
       "github": "https://github.com/Strange-can"
-    },
-    {
-      "name": "Yamin Alee (Pakistan)",
-      "role": "Minor assistance & debugging support",
-      "github": "https://github.com/mastoi-yamin"
     }
   ]
 }

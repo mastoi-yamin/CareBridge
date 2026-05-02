@@ -7,9 +7,14 @@ layout: base.njk
   Back to Dashboard
 </a>
 
-<form id="indRequestForm">
-  <input type="text" id="medNameInd" placeholder="Medicine Name" required>
-  <input type="number" id="costInd" placeholder="Cost ($)" required>
-  <label><input type="checkbox" required> I swear this is a true life-saving request. ⚖️</label>
+<form id="indRequestForm" class="container">
+  <label>Medicine Names
+    <input type="text" id="medNameInd" placeholder="separate them with comma" required>
+  </label>
+  <label>Total Cost ($)
+    <input type="number" id="costInd" required>
+  </label>
+  <label><input type="checkbox" required> I swear this is a true life-saving request. <svg xmlns="http://www.w3.org/2000/svg" style="width: 1.5rem; height: 1.5rem" viewBox="0 0 256 256"><rect fill="none"/><line x1="128" y1="40" x2="128" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="104" y1="216" x2="152" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="56" y1="88" x2="200" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,168c0,17.67,20,24,32,24s32-6.33,32-24L56,88Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M168,136c0,17.67,20,24,32,24s32-6.33,32-24L200,56Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg></label>
+  <br />
   <button type="submit">Request Help</button>
 </form>

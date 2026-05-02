@@ -10,6 +10,16 @@
   box-sizing: border-box;
   font-family: 'Inter'!important;
 }
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 .topnav {
   padding: 0 18px;
   position: sticky;
@@ -66,8 +76,8 @@ a img {
 }
 
 .nav-icon {
-  width: 32px;
-  height: 32px;
+  width: 1.5rem;
+  height: 1.5rem;
   fill: none;
   color: currentColor;  /* Uses text color */
   stroke: none;

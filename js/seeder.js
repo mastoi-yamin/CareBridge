@@ -53,7 +53,7 @@ export async function autoSeed() {
         }
 
         localStorage.setItem('db_primed', 'true');
-        console.log("✅ Demo environment ready.");
+        console.log("Demo environment ready.");
     } catch (err) {
         console.error("Seeding failed:", err);
     }
