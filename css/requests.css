@@ -12,56 +12,6 @@
   border-radius: var(--bd-rad);
   padding: 15px 18px;
 }
-
-#cont aside, #right, .arrow-btn {
-  transition: 0.025s linear;
-}
-
-.arrow-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: 0;
-}
-.arrow-btn svg {
-  width: 2rem;
-  height: 2rem;
-  fill: none;
-  color: dodgerblue;  /* Uses text color */
-  stroke: none;
-}
-
-@media only screen and (min-width: 700px) {
-  #right { margin-left: 40%}
-  #cont aside {
-    position: fixed;
-    top: 15%;
-    transform: translateY(-50deg);
-    left: 15px;
-    width: calc(40% - 32px)!important;
-  }
-}
-
-#arrow-btn-left {
-  right: -2rem;
-}
-
-#arrow-btn-right {
-  right: -1.7rem;
-  background: white;
-  
-  box-shadow: 0 4px 8px rgba(0, 0,0 ,0.2);
-}
-
-#arrow-btn-right img { margin-left: 25%; }
-
-#cont .hide-aside {
-  left: -37%;
-  border-color: transparent!important;
-}
-.full-section { margin-left: 0!important }
-
 .hospital-logo {
   border-radius: 50%;
   width: var(--hos-logo-size);
@@ -100,15 +50,4 @@ section#right article header .inner-1 {
   background-color: #0f4c2a;
   font-weight: bold;
   color: white;
-}
-.hide-arrow {
-  display: none;
-}
-
-@media only screen and (max-width: 700px) {
-  .arrow-btn { display: none; }
-}
-
-@media (prefers-color-scheme: dark) {
-  #arrow-btn-right, #arrow-btn-left { background: #333 }
 }

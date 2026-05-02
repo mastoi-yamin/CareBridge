@@ -21,15 +21,6 @@ async function loadRequests(filterOpts = {}) {
         orderBy("createdAt", filterOpts.amount === 'newest' || !filterOpts.amount ? "desc" : "asc")
     ];
 
-    if (filterOpts.type && filterOpts.type !== 'all') {
-        // 'hospitals' -> 'hospital', 'individuals' -> 'individual'
-        constraints.push(where("type", "==", filterOpts.type.replace(/s$/, '')));
-    }
-
-    if (filterOpts.priority && filterOpts.priority !== 'all') {
-        constraints.push(where("urgent", "==", filterOpts.priority === 'life'));
-    }
-
     const q = query(collection(window.db, "requests"), ...constraints);
     const querySnapshot = await getDocs(q);
 
@@ -44,8 +35,6 @@ async function loadRequests(filterOpts = {}) {
     let docs = [];
     querySnapshot.forEach(docSnap => docs.push({ id: docSnap.id, ...docSnap.data() }));
 
-    if (filterOpts.amount === 'lowest') docs.sort((a, b) => a.cost - b.cost);
-    if (filterOpts.amount === 'highest') docs.sort((a, b) => b.cost - a.cost);
 
     for (const item of docs) {
         const isHospital = item.type === 'hospital';
@@ -90,17 +79,6 @@ async function loadRequests(filterOpts = {}) {
         requestsContainer.appendChild(article);
     }
 }
-
-// ✅ Fixed: filter form now actually triggers loadRequests
-document.querySelector('#cont-aside form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    loadRequests({
-        type: formData.get('type'),
-        priority: formData.get('priority'),
-        amount: formData.get('amount'),
-    });
-});
 
 window.contactUser = async (uid, med) => {
     const userSnap = await window.getUserData(uid);

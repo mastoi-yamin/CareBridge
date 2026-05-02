@@ -7,48 +7,6 @@ js:
   - '/js/requests/index.js'
 ---
 <section id="cont" class="container-fluid">
-  <aside class="container" id="cont-aside">
-        
-    <button class="arrow-btn" id="arrow-btn-left" onclick="
-        addClass('#cont-aside', 'hide-aside');
-        addClass('#right', 'full-section');
-        remClass('#arrow-btn-right', 'hide-arrow');
-        addClass(this, 'hide-arrow')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect fill="none"/><rect x="40" y="40" width="176" height="176" rx="8" transform="translate(256 0) rotate(90)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="128" x2="168" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="120 96 88 128 120 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-    </button>
-    
-    
-    <button class="arrow-btn hide-arrow" id="arrow-btn-right" onclick="remClass('#cont-aside', 'hide-aside'); remClass('#right', 'full-section'); remClass('#arrow-btn-left', 'hide-arrow'); addClass(this, 'hide-arrow')" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect fill="none"/><rect x="40" y="40" width="176" height="176" rx="8" transform="translate(256) rotate(90)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="128" x2="168" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="136 96 168 128 136 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-    </button>
-    
-    <form>
-      <h2 style="padding-top: 11px;">Filter Requests</h2>
-      <hr />
-      <div class="grid">
-        <select name="type" aria-label="type" required>
-          <option selected value="all">Type (All)</option>
-          <option value="hospitals">Hospitals</option>
-          <option value="individuals">Individuals</option>
-        </select>
-        <select name="priority" aria-label="priority" required>
-          <option selected value="all">Priority (All)</option>
-          <option value="life">Life</option>
-          <option value="normal">Normal</option>
-        </select>
-      </div>
-      
-      <div>
-        <select name="amount" aria-label="amount" required>
-          <option selected value="newest">Newest first</option>
-          <option value="lowest">Lowest first $</option>
-          <option value="highest">Highest first $$$</option>
-        </select>
-      </div>
-      
-      <input type="submit" value="Filter" />
-    </form>
-  </aside>
   <section id="right">
     <article>
       <header>
